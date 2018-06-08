@@ -1,0 +1,47 @@
+libXp-1.0.0-15.1.el6.x86_64 - OK
+- libXau-1.0.5-1.el6.x86_64 comes through dependencies with libXp
+- libXext-1.1-3.el6.x86_64  idem
+- libX11-1.3-2.el6.x86_64   idem
+- libxcb-1.5-1.el6.x86_64   idem
+libXmu-1.0.5-1.el6.x86_64 - OK
+libaio.so.1 - OK
+libpam.so.0 - OK
+
+# for a DB2 repository tier :
+"instance user": create db2inst1/db2inst1 user + db2iadm1 group + $HOME /home/db2inst1
+tcp/port : 50000
+"fenced user":   create db2fenc1/db2fenc1 + db2fadm1 group + $HOME /home/db2fenc1
+"database owner": create xmeta/xmeta
+"Staging Area": xmetasr/xmetasr
+"Operation Database": dsodb/dsodb
+"database location": /opt/IBM/InformationServer/Repos/xmeta
+
+# Create user
+# CHECK: /install/is-suite/tools/ValidateUser -change_pwd db2fenc1 ******
+db2inst1:x:1000:1000::/home/db2inst1:/bin/sh
+/usr/sbin/groupadd db2iadm1
+/usr/sbin/useradd -g db2iadm1 -d /home/db2inst1 -m -s /bin/sh db2inst1, env = null, workingDir =null
+db2fenc1:x:1001:1001::/home/db2fenc1:/bin/sh
+/usr/sbin/groupadd db2fadm1
+/usr/sbin/useradd -g db2fadm1 -d /home/db2fenc1 -m -s /bin/sh db2fenc1, env = null, workingDir =null
+xmeta:x:1002:1002::/home/xmeta:/bin/sh
+/usr/sbin/groupadd xmeta
+/usr/sbin/useradd -g xmeta -d /home/xmeta -m -s /bin/sh xmeta, env = null, workingDir =null
+xmetasr:x:1003:1003::/home/xmetasr:/bin/sh
+/usr/sbin/groupadd xmetasr
+/usr/sbin/useradd -g xmetasr -d /home/xmetasr -m -s /bin/sh xmetasr, env = null, workingDir =null
+dsodb:x:1004:1004::/home/dsodb:/bin/sh
+/usr/sbin/groupadd dsodb
+/usr/sbin/useradd -g dsodb -d /home/dsodb -m -s /bin/sh dsodb, env = null, workingDir =null
+
+
+FAILED: Ensure that the operating system has at least 4 GB memory. Found 0.972 GB memory. (VirtualBox)
+
+
+WARNING: CDIPR2021I: Ensure that required kernel parameter kernel.msgmnb is optimal. 
+The current value of kernel parameter kernel.msgmnb is 16,384. The recommended value is 65,536. 
+
+WARNING: CDIPR2021I: Ensure that required kernel parameter kernel.msgmax is optimal. 
+The current value of kernel parameter kernel.msgmax is 8,192. The recommended value is 65,536. 
+
+
