@@ -1,3 +1,4 @@
+# ---------------------------------------------------------------------------
 #   Copyright 2018 Jerome Delvigne
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +17,8 @@
 # Prerequisite
 # Download files :
 # - IS_V11.7_LINUX_X86_64_MULTILING.tar.gz (CNR06ML) :: $INSTALL_FILE_PAYLOAD
-# - A licence file :: $INSTALL_FILE_SPEC
+# - IIS_ENTERPRISE_EDITION_V11.7_BUND.zip (??) Or any valid licence file :: $INSTALL_FILE_SPEC
+# Copy them into iis-installer directory
 
 # References
 # ----------
@@ -26,7 +28,11 @@
 
 # Pull base image
 # ---------------
-FROM centos:7 AS iis-install
+FROM centos:7
+
+# Maintainer
+#-----------
+LABEL maintainer="jerome.henri.delvigne@gmail.com"
 
 # docker-machine prerequisite
 # ---------------------------
@@ -58,15 +64,12 @@ RUN yum install -y \
     libXmu \
     libaio && \
     yum clean all && \
-    rm -rf /var/cache/yum
-
-# Set the working directory to $INSTALL_DIR
-# -----------------------------------------
-WORKDIR $INSTALL_DIR
+    rm -rf /var/cache/yum && \
+    mkdir -p $INSTALL_DIR
 
 # Copy binaries and licence file
 # ------------------------------
-COPY $INSTALL_FILE_PAYLOAD $INSTALL_FILE_SPEC ./
+ADD $INSTALL_FILE_PAYLOAD $INSTALL_FILE_SPEC $INSTALL_DIR/
 
 # Unpacking $INSTALL_FILE_PAYLOAD it creates a "is-suite" dir
 # Unpacking $INSTALL_FILE_SPEC into is-suite dir
@@ -86,6 +89,10 @@ VOLUME ["/responsefiles"]
 # ---------------------------------------
 EXPOSE 8446
 
+# Set the working directory to $INSTALL_DIR/is-suite
+# --------------------------------------------------
+WORKDIR $INSTALL_DIR/is-suite
+
 # This image laucnch the installation program
 # -------------------------------------------
-ENTRYPOINT [ "/bin/bash", "$INSTALL_DIR/is-suite/setup -verbose" ]
+ENTRYPOINT [ "/bin/bash", "-c", "./setup", "-verbose" ]

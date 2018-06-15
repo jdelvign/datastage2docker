@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# ---------------------------------------------------------------------------
 #   Copyright 2018 Jerome Delvigne
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,11 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-
-# IIS Database Image Name
-IMAGE_NAME="jdelvign/iis-install:11.7"
-
-docker build --force-rm=true -t $IMAGE_NAME . || {
-  echo ""
-  echo "ERROR: InfoSphere Information Server v11.7 Docker Image was NOT successfully created."
-  echo "ERROR: Check the output and correct any reported problems with the docker build operation."
-  exit 1
-}
-echo ""
+docker run  --name iis-installer \
+            --sysctl kernel.msgmax=65536 \
+            --sysctl kernel.msgmnb=65536 \
+            -p 8446:8446 \
+            -h iisbox \
+            --rm \
+            -v //c/Users/delvignej/responsefiles:/responsefiles \
+            jdelvign/iis-installer:11.7
