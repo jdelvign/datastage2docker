@@ -65,20 +65,22 @@ RUN yum install -y \
     libaio && \
     yum clean all && \
     rm -rf /var/cache/yum && \
-    mkdir -p $INSTALL_DIR
+    mkdir -p ${INSTALL_DIR}
 
 # Copy binaries and licence file
 # ------------------------------
-ADD $INSTALL_FILE_PAYLOAD $INSTALL_FILE_SPEC $INSTALL_DIR/
+COPY ${INSTALL_FILE_PAYLOAD} ${INSTALL_FILE_SPEC} ${INSTALL_DIR}/
 
 # Unpacking $INSTALL_FILE_PAYLOAD it creates a "is-suite" dir
 # Unpacking $INSTALL_FILE_SPEC into is-suite dir
 # Finally we create the dir that will contains the response files
 # ---------------------------------------------------------------
-RUN tar -xzvf $INSTALL_FILE_PAYLOAD && \
-    rm $INSTALL_FILE_PAYLOAD && \
-    unzip $INSTALL_FILE_SPEC -d is-suite && \
-    rm $INSTALL_FILE_SPEC && \
+WORKDIR ${INSTALL_DIR}
+
+RUN tar -xzf ${INSTALL_FILE_PAYLOAD} && \
+    rm ${INSTALL_FILE_PAYLOAD} && \
+    unzip ${INSTALL_FILE_SPEC} -d is-suite && \
+    rm ${INSTALL_FILE_SPEC} && \
     mkdir /responsefiles
 
 # Volume on it 
@@ -89,9 +91,9 @@ VOLUME ["/responsefiles"]
 # ---------------------------------------
 EXPOSE 8446
 
-# Set the working directory to $INSTALL_DIR/is-suite
+# Set the working directory to ${INSTALL_DIR}/is-suite
 # --------------------------------------------------
-WORKDIR $INSTALL_DIR/is-suite
+WORKDIR ${INSTALL_DIR}/is-suite
 
 # This image laucnch the installation program
 # -------------------------------------------

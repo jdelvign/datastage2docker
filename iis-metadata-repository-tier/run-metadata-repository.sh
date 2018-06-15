@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# ---------------------------------------------------------------------------
 #   Copyright 2018 Jerome Delvigne
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,21 +16,10 @@
 # ---------------------------------------------------------------------------
 
 docker run  --name iis-installer \
-           -it \
-           --sysctl kernel.msgmax=65536 \
-           --sysctl kernel.msgmnb=65536 \
-           -p 50000:50000 \
-           -h db2box \
-           --entrypoint "bash" \
-           --rm \
-           -v //c/Users/delvignej/responsefiles:/responsefiles \
-           jdelvign/iis-db2-repository:11.7
-
-# docker run  --name iis-installer \
-#             --sysctl kernel.msgmax=65536 \
-#             --sysctl kernel.msgmnb=65536 \
-#             -p 8446:8446 \
-#             -h iisbox \
-#             --rm \
-#             -v //c/Users/delvignej/responsefiles:/responsefiles \
-#             jdelvign/iis-install:11.7
+            --sysctl kernel.msgmax=65536 \
+            --sysctl kernel.msgmnb=65536 \
+            -p 8446:8446 \
+            -h iisbox \
+            --rm \
+            -v //c/Users/delvignej/responsefiles:/responsefiles \
+            jdelvign/iis-install:11.7
