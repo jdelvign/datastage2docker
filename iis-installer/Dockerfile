@@ -38,6 +38,9 @@ LABEL maintainer="jerome.henri.delvigne@gmail.com"
 # ---------------------------
 # Ensure that the host operating system has at least 4 GB memory. (Increase VirtualBox VM memory)
 # Ensure that the host has at least 40 Gb to hold the docker image you build
+# docker-machine rm default
+# docker-machine create -d virtualbox -virtualbox-memory "5120" --virtualbox-disk-size "61440" --virtualbox-cpu-count "2" default
+
 
 # launch docker run with
 # ----------------------
