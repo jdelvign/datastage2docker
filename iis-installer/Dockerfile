@@ -100,4 +100,4 @@ WORKDIR ${INSTALL_DIR}/is-suite
 
 # This image laucnch the installation program
 # -------------------------------------------
-ENTRYPOINT [ "/bin/bash", "-c", "./setup", "-verbose" ]
+ENTRYPOINT [ "/bin/bash", "-c", "./setup -verbose"]
