@@ -15,7 +15,7 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name iis-installer \
+docker run  --name iis-repository \
            -it \
            --sysctl kernel.msgmax=65536 \
            --sysctl kernel.msgmnb=65536 \
@@ -23,5 +23,5 @@ docker run  --name iis-installer \
            -h db2box \
            --entrypoint "bash" \
            --rm \
-           -v //c/Users/delvignej/responsefiles:/responsefiles \
-           jdelvign/iis-db2-repository:11.7
+           -v //c/Users/delvignej/iis-logs:/opt/IBM/InformationServer/logs \
+           jdelvign/iis-repository:11.7

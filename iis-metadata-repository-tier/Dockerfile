@@ -1,3 +1,4 @@
+# ---------------------------------------------------------------------------
 #   Copyright 2018 Jerome Delvigne
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +16,7 @@
 
 # Pull base image
 # ---------------
-FROM jdelvign/iis-install:11.7
+FROM jdelvign/iis-installer:11.7
 
 # Environment variables required for this build (empty)
 # -------------------------------------------------------------
@@ -47,7 +48,9 @@ RUN /usr/sbin/groupadd db2iadm1 && \
     /usr/sbin/useradd -g dsodb -d /home/dsodb -m -s /bin/sh dsodb && \
     echo -e "dsodb\ndsodb\n" | passwd dsodb
 
-RUN $INSTALL_DIR/is-suite/setup -rsp $INSTALL_DIR/$RESPONSE_FILE_DB2 -verbose
+#RUN $INSTALL_DIR/is-suite/setup -rsp $INSTALL_DIR/$RESPONSE_FILE_DB2 -verbose
 
 # DB2 instance port 
 EXPOSE 50000
+
+#ENTRYPOINT [ "/bin/bash", "-c", "su -c 'db2start' - db2inst1"]

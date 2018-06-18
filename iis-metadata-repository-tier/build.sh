@@ -17,7 +17,7 @@
 
 
 # IIS Database Image Name
-IMAGE_NAME="jdelvign/iis-db2-repository:11.7"
+IMAGE_NAME="jdelvign/iis-repository:11.7"
 
 docker build --force-rm=true -t $IMAGE_NAME . || {
   echo ""
