@@ -1,0 +1,48 @@
+*  Product Installation
+PROD=EXPRESS_C
+LIC_AGREEMENT=ACCEPT
+INSTALL_TYPE=CUSTOM
+FILE=/opt/IBM/DB2
+INSTALL_TYPE=TYPICAL
+*COMP=SQL_PROCEDURES
+*COMP=BASE_CLIENT
+*COMP=CONNECT_SUPPORT
+*COMP=DB2_SAMPLE_DATABASE
+*COMP=SPATIAL_EXTENDER_CLIENT_SUPPORT
+*COMP=COMMUNICATION_SUPPORT_TCPIP
+*COMP=JDK
+*COMP=DB2_DATA_SOURCE_SUPPORT
+*COMP=APPLICATION_DEVELOPMENT_TOOLS
+*COMP=INSTANCE_SETUP_SUPPORT
+*COMP=BASE_DB2_ENGINE
+*COMP=JAVA_SUPPORT
+*COMP=LDAP_EXPLOITATION
+*COMP=FIRST_STEPS
+*COMP=REPL_CLIENT
+
+* ----------------------------------------------
+*  Instance properties
+* ----------------------------------------------
+INSTANCE=db2inst1
+db2inst1.TYPE=WSE
+*  Instance-owning user
+db2inst1.NAME=db2inst1
+db2inst1.PASSWORD=db2inst1
+db2inst1.GROUP_NAME=db2iadm1
+db2inst1.HOME_DIRECTORY=/home/db2inst1
+db2inst1.AUTOSTART=NO
+db2inst1.AUTHENTICATION=SERVER
+db2inst1.SVCENAME=db2c_db2inst1
+db2inst1.PORT_NUMBER=50000
+*db2inst1.FEDERATED=YES
+*  Fenced user
+db2inst1.FENCED_USERNAME=db2fenc1
+db2inst1.FENCED_PASSWORD=db2fenc1
+db2inst1.FENCED_GROUP_NAME=db2fadm1
+db2inst1.FENCED_HOME_DIRECTORY=/home/db2fenc1
+
+*-----------------------------------------------
+*  Installed Languages
+*-----------------------------------------------
+LANG=FR
+*PACKAGE_LOCATION=/install/is-suite/payloads/Shared/DB2/payload

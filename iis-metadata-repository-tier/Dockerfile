@@ -50,6 +50,11 @@ RUN /usr/sbin/groupadd db2iadm1 && \
 
 #RUN $INSTALL_DIR/is-suite/setup -rsp $INSTALL_DIR/$RESPONSE_FILE_DB2 -verbose
 
+#
+# INFO: CDIIN2753I:Command Array: /install/is-suite/payloads/Shared/DB2/payload/db2setup -f sysreq -r /opt/IBM/InformationServer/logs/responses/db2_install.rsp -t /opt/IBM/InformationServer/logs/db2_install.trc -l /opt/IBM/InformationServer/logs/db2_install.log
+
+#
+
 # DB2 instance port 
 EXPOSE 50000
 
