@@ -23,6 +23,7 @@
 # https://www.ibm.com/support/knowledgecenter/en/SSZLC2_9.0.0/com.ibm.commerce.install.doc/tasks/tiginstall_db2docker.htm
 # https://github.com/oracle/docker-images/tree/master/OracleDatabase/SingleInstance
 # https://www.ibm.com/developerworks/data/library/techarticle/dm-1602-db2-docker-trs/index.html
+# https://www.ibm.com/support/knowledgecenter/SSZJPZ_11.7.0/com.ibm.swg.im.iis.productization.iisinfsv.install.doc/topics/wsisinst_pre_using_db2_manual_linuxunix.html
 #
 
 # Pull base image
@@ -95,27 +96,20 @@ RUN /usr/sbin/groupadd db2iadm1 && \
     /usr/sbin/useradd -g dsodb -d /home/dsodb -m -s /bin/bash dsodb && \
     echo -e "dsodb\ndsodb\n" | passwd dsodb
 
-# Copy binaries and licence file
-# ------------------------------
-COPY ${INSTALL_FILE_PAYLOAD} ${DB2_REPONSE_FILE} ${INSTALL_DIR}/
-
-# Change working wiretory to ${INSTALL_DIR}
-# -----------------------------------------
-WORKDIR ${INSTALL_DIR}
+# Copy binaries and all install stuff
+# ----------------------------------
+COPY create_xmeta_db ${INSTALL_FILE_PAYLOAD} ${DB2_REPONSE_FILE} ${INSTALL_DIR}/
 
 # Unpacking $INSTALL_FILE_PAYLOAD it creates a "expc" dir
 # Finally we create the dir that will contains the response files
 # ---------------------------------------------------------------
-RUN tar -xzf ${INSTALL_FILE_PAYLOAD} && \
+RUN cd ${INSTALL_DIR} && \
+    tar -xzf ${INSTALL_FILE_PAYLOAD} && \
     rm ${INSTALL_FILE_PAYLOAD}
-
-# Change working directory to ${INSTALL_DIR}/expc
-# -----------------------------------------------
-WORKDIR ${INSTALL_DIR}/expc
 
 # Install DB2 with the response file
 # ----------------------------------
-RUN ./db2setup \
+RUN ${INSTALL_DIR}/expc/db2setup \
     -r ${INSTALL_DIR}/${DB2_REPONSE_FILE} \
     -l ${INSTALL_DIR}/logs/db2setup.log \
     -t ${INSTALL_DIR}/logs/db2setup.trc
@@ -124,14 +118,10 @@ RUN ./db2setup \
 # ----------------------
 COPY entrypoint.sh ${HOME}/
 
-# change to root $HOME directory
-# ------------------------------
-WORKDIR ${HOME}
-
 # DB2 instance port
 # -----------------
 EXPOSE 50000
 
 # This image launch the installation program
 # ------------------------------------------
-ENTRYPOINT [ "./entrypoint.sh", "start" ]
+ENTRYPOINT [ "/root/entrypoint.sh", "start" ]

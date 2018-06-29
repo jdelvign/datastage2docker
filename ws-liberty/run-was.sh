@@ -15,14 +15,11 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name db2 \
-            -p 50000:50000 \
-            -it \
-            --ipc=shareable \
-            --cap-add=IPC_OWNER \
+docker run  --name was -d -i \
+            --hostname wasbox \
             --sysctl kernel.msgmax=65536 \
             --sysctl kernel.msgmnb=65536 \
-            -h db2box \
-            --entrypoint "bash" \
-            --rm \
-            jdelvign/db2-expc:11.1
+            -p 9446:9446 \
+            -p 9080:9080 \            
+            --entrypoint "/bin/bash" \
+            jdelvign/ws-liberty:11.7

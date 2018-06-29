@@ -15,11 +15,14 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name iis-installer \
+docker run  --name db2 -d -i \
+            --hostname db2box \
+            --network infosphere \
+            --network-alias db2box \
+            --ipc shareable  \
+            --cap-add IPC_OWNER \
             --sysctl kernel.msgmax=65536 \
             --sysctl kernel.msgmnb=65536 \
-            -p 8446:8446 \
-            -h iisbox \
-            --rm \
-            -v //c/Users/delvignej/responsefiles:/responsefiles \
-            jdelvign/iis-install:11.7
+            --mount 'type=volume,source=db2data,destination=/home/db2inst1' \
+            -p 50000:50000 \
+            jdelvign/db2express-c:11.1

@@ -1,5 +1,5 @@
 #!/bin/bash
-# ---------------------------------------------------------------------------
+
 #   Copyright 2018 Jerome Delvigne
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,11 +17,11 @@
 
 
 # IIS Database Image Name
-IMAGE_NAME="jdelvign/db2-expc:11.1"
+IMAGE_NAME="jdelvign/ws-liberty:11.7"
 
-docker build --force-rm=true -t $IMAGE_NAME . || {
+docker build --force-rm=true --network iis-network -t $IMAGE_NAME . || {
   echo ""
-  echo "ERROR: DB2 Express-C v11.1 Docker Image was NOT successfully created."
+  echo "ERROR: WebSphere Liberty Core for IIS v11.7 Docker Image was NOT successfully created."
   echo "ERROR: Check the output and correct any reported problems with the docker build operation."
   exit 1
 }

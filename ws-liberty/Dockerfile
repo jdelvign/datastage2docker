@@ -1,4 +1,3 @@
-#!/bin/bash
 # ---------------------------------------------------------------------------
 #   Copyright 2018 Jerome Delvigne
 #
@@ -15,12 +14,26 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name db2 -d -i \
-            -h db2box \
-            -p 50000:50000 \
-            --ipc=shareable \
-            --cap-add=IPC_OWNER \
-            --sysctl kernel.msgmax=65536 \
-            --sysctl kernel.msgmnb=65536 \
-            -v //c/Users/delvignej/db2_data:/home/db2inst1 \
-            jdelvign/db2-expc:11.1
+# Pull base image
+# ---------------
+FROM jdelvign/iis-installer:11.7
+
+# Environment variables required for this build (empty)
+# -------------------------------------------------------------
+ENV RESPONSE_FILE="was-response.txt" \
+    INSTALL_DIR="/install"
+
+# install "service package"
+
+# Copy response file
+# ------------------
+COPY $RESPONSE_FILE $INSTALL_DIR/
+
+# Add Users and Groups needed by the Repository Tier
+
+RUN $INSTALL_DIR/is-suite/setup -rsp $INSTALL_DIR/$RESPONSE_FILE -verbose
+
+# WebSphere Liberty instance port 
+EXPOSE 9080 9446
+
+ENTRYPOINT [ "/opt/IBM/InformationServer/ASBServer/bin/MetadataServer.sh", "run"]
