@@ -15,10 +15,7 @@
 # ---------------------------------------------------------------------------
 
 # Prerequisite
-# Download files :
-# - IS_V11.7_LINUX_X86_64_MULTILING.tar.gz (CNR06ML)
-# - IIS_ENTERPRISE_EDITION_V11.7_BUND.zip (??)
-# Copy them into /c/Users/ directory
+#   Setup the "iis-installer" image and docker volume
 
 # References
 # ----------
@@ -36,8 +33,8 @@ LABEL maintainer="jerome.henri.delvigne@gmail.com"
 
 # docker-machine prerequisite
 # ---------------------------
-# Ensure that the host operating system has at least 4 GB memory. (Increase VirtualBox VM memory)
-# Ensure that the host has at least 40 Gb to hold the docker image you build
+# Ensure that the host operating system has at least 5 GB memory. (Increase VirtualBox VM memory)
+# Ensure that the host has at least 60 Gb to hold the docker image you build
 # docker-machine rm default
 # docker-machine create -d virtualbox -virtualbox-memory "5120" --virtualbox-disk-size "61440" --virtualbox-cpu-count "2" default
 
@@ -48,9 +45,10 @@ LABEL maintainer="jerome.henri.delvigne@gmail.com"
 #   --sysctl kernel.msgmax=65536
 #   --sysctl kernel.msgmnb=65536
 
-# Environment variables required for this build (empty)
-# -------------------------------------------------------------
-ENV INSTALL_DIR="/install"
+# Environment variables required for this build
+# ---------------------------------------------
+ENV HOME="/root" \
+    INSTALL_DIR="/install"
 
 # Update and install required tools and libraries
 # -----------------------------------------------
@@ -59,43 +57,26 @@ RUN yum install -y \
     net-tools \
     which \
     bc \
-    pam \
-    pam.i686 \
+    ed \
+    gcc \
     libXp \
     libXmu \
     libaio && \
     yum clean all && \
     rm -rf /var/cache/yum && \
-    mkdir -p ${INSTALL_DIR}
-
-# Copy binaries and licence file
-# ------------------------------
-COPY ${INSTALL_FILE_PAYLOAD} ${INSTALL_FILE_SPEC} ${INSTALL_DIR}/
-
-# Unpacking $INSTALL_FILE_PAYLOAD it creates a "is-suite" dir
-# Unpacking $INSTALL_FILE_SPEC into is-suite dir
-# Finally we create the dir that will contains the response files
-# ---------------------------------------------------------------
-WORKDIR ${INSTALL_DIR}
-
-RUN tar -xzf ${INSTALL_FILE_PAYLOAD} && \
-    rm ${INSTALL_FILE_PAYLOAD} && \
-    unzip ${INSTALL_FILE_SPEC} -d is-suite && \
-    rm ${INSTALL_FILE_SPEC} && \
     mkdir /responsefiles
 
-# Volume on it 
-# ---------------------------------------------------
-VOLUME ["/responsefiles"]
+# Create group dstage
+# Create user dsadm
+# /usr/sbin/useradd -g dstage -d /home/dsadm -m -s /bin/sh dsadm
 
-# The installation program listen to 8446
-# ---------------------------------------
-EXPOSE 8446
-
-# Set the working directory to ${INSTALL_DIR}/is-suite
-# --------------------------------------------------
-WORKDIR ${INSTALL_DIR}/is-suite
+# ASB agent port : 31531
+# Job Monitor port 1: 13401
+# Job Monitor port 1: 13402
+# RPC port :31538
+# -------------------------
+EXPOSE 31531 13401 13402 31538
 
 # This image laucnch the installation program
 # -------------------------------------------
-ENTRYPOINT [ "/bin/bash", "-c", "./setup -verbose"]
+ENTRYPOINT [ "/root/entrypoint.sh", "start"]

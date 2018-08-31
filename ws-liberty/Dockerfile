@@ -31,9 +31,9 @@ COPY $RESPONSE_FILE $INSTALL_DIR/
 
 # Add Users and Groups needed by the Repository Tier
 
-RUN $INSTALL_DIR/is-suite/setup -rsp $INSTALL_DIR/$RESPONSE_FILE -verbose
+#RUN $INSTALL_DIR/is-suite/setup -rsp $INSTALL_DIR/$RESPONSE_FILE -verbose
 
 # WebSphere Liberty instance port 
 EXPOSE 9080 9446
 
-ENTRYPOINT [ "/opt/IBM/InformationServer/ASBServer/bin/MetadataServer.sh", "run"]
+#ENTRYPOINT [ "/opt/IBM/InformationServer/ASBServer/bin/MetadataServer.sh", "run"]

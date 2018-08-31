@@ -15,13 +15,15 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name was -d -i \
-            --hostname wasbox \
+docker run  --name engine-installer -it \
+            --hostname dsbox \
             --network infosphere \
-            --network-alias wasbox \
+            --network-alias dsbox \
             --sysctl kernel.msgmax=65536 \
             --sysctl kernel.msgmnb=65536 \
-            -p 9446:9446 \
-            -p 9080:9080 \
-            --entrypoint "/root/entrypoint.sh start"
-            jdelvigne/ws-liberty:was117
+            -p 8446:8446 \
+            --rm \
+            -v //c/Users/delvignej/responsefiles:/responsefiles \
+            --mount 'type=volume,source=iis-installer,destination=/install,readonly' \
+            --entrypoint "bash" \
+            jdelvign/engine:11.7

@@ -15,13 +15,13 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name iis-repository \
-           -it \
-           --sysctl kernel.msgmax=65536 \
-           --sysctl kernel.msgmnb=65536 \
-           -p 50000:50000 \
-           -h db2box \
-           --entrypoint "bash" \
-           --rm \
-           -v //c/Users/delvignej/iis-logs:/opt/IBM/InformationServer/logs \
-           jdelvign/iis-repository:11.7
+docker run  --name was -it \
+            --hostname wasbox \
+            --network infosphere \
+            --network-alias wasbox \
+            --sysctl kernel.msgmax=65536 \
+            --sysctl kernel.msgmnb=65536 \
+            -p 9080:9080 \
+            -p 9446:9446 \
+            --entrypoint "bash" \
+            jdelvigne/ws-liberty:was117

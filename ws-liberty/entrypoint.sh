@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 # ---------------------------------------------------------------------------
 #   Copyright 2018 Jerome Delvigne
 #
@@ -15,13 +15,26 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name was -d -i \
-            --hostname wasbox \
-            --network infosphere \
-            --network-alias wasbox \
-            --sysctl kernel.msgmax=65536 \
-            --sysctl kernel.msgmnb=65536 \
-            -p 9446:9446 \
-            -p 9080:9080 \
-            --entrypoint "/root/entrypoint.sh start"
-            jdelvigne/ws-liberty:was117
+set -x
+
+SERVER="/opt/IBM/InformationServer/ASBServer/bin/MetadataServer.sh"
+
+function start { 
+    trap stop SIGTERM 
+    echo "Attempting to stop WAS server" 
+    ${SERVER} stop 
+    echo "Attempting to start WAS server" 
+    ${SERVER} run
+    echo WAS started on `date` 
+    tail -F /opt/IBM/InformationServer/wlp/usr/servers/iis/logs/messages.log & LOG_PID=$!
+    wait $LOG_PID 
+} 
+    
+function stop {
+    echo "Attempting to stop WAS server" 
+    ${SERVER} stop 
+    echo IIS stopped on `date` 
+    exit 
+} 
+
+"$@"

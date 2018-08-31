@@ -25,6 +25,10 @@ Copy them into the `iis-installer` directory
 `cd` into the `iis-installer` directory.  
 Edit the `build.sh` script and change the tag name (the tag is for my own use...)
 
+Create the iis-installer volume
+
+    docker volume create iis-installer
+
 ## Build the `db2express-c` image
 Download the db2express-c v11.1 package for linux from IBM website(**v11.1_linuxx64_expc.tar.gz**) and copy it into the `db2express-c` directory
 
@@ -45,6 +49,18 @@ Once the build is done and no major error happens, you can run the container
     ./run-db2.sh
 
 Now you can create database and do want you want, DB2 is alive, ALIVE !
+
+To install XMETA database :
+
+    su - db2inst1
+    cd /install
+    ./create_xmeta_db.sh
+    ./configure_staging_area.sh
+    @TODO Flow Designe USER PREF!!
+
+To drop DROP XMETA database if necessary :
+
+    # ./entrypoint.sh run db2 DROP DATABASE XMETA
 
 Check the logs, it come from the tail -F db2diag.log into the [entrypoint.sh](./db2express-c/entrypoint.sh)
 

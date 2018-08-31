@@ -1,5 +1,5 @@
 #!/bin/bash
-# ---------------------------------------------------------------------------
+
 #   Copyright 2018 Jerome Delvigne
 #
 #    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,14 @@
 #    limitations under the License.
 # ---------------------------------------------------------------------------
 
-docker run  --name was -d -i \
-            --hostname wasbox \
-            --network infosphere \
-            --network-alias wasbox \
-            --sysctl kernel.msgmax=65536 \
-            --sysctl kernel.msgmnb=65536 \
-            -p 9446:9446 \
-            -p 9080:9080 \
-            --entrypoint "/root/entrypoint.sh start"
-            jdelvigne/ws-liberty:was117
+
+# IIS Database Image Name
+IMAGE_NAME="jdelvign/engine:11.7"
+
+docker build --force-rm=true -t $IMAGE_NAME . || {
+  echo ""
+  echo "ERROR: InfoSphere Information Server v11.7 Docker Image was NOT successfully created."
+  echo "ERROR: Check the output and correct any reported problems with the docker build operation."
+  exit 1
+}
+echo ""

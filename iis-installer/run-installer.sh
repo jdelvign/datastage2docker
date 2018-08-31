@@ -16,11 +16,13 @@
 # ---------------------------------------------------------------------------
 
 docker run  --name iis-installer \
-            --link db2:db2 \
+            --hostname iisbox \
+            --it \
             --sysctl kernel.msgmax=65536 \
             --sysctl kernel.msgmnb=65536 \
             -p 8446:8446 \
-            -h iisbox \
             --rm \
             -v //c/Users/delvignej/responsefiles:/responsefiles \
-            jdelvign/iis-installer:11.7
+            --mount 'type=volume,source=lv_installer,destination=/install,readonly' \
+            --entrypoint "bash" \
+            centos:7
